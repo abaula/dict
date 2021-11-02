@@ -253,3 +253,5 @@ paket-files/
 
 # Custom paths
 data/
+hagen_morph/
+opencorpora/
