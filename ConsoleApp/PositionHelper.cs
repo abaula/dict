@@ -14,6 +14,7 @@ namespace ConsoleApp
             return position;
         }
 
+        // TODO need Unit test for ensure the `collection` is ordered by position with ascending order.
         public static ushort[] GetForPosition(this (ushort, ushort[])[] collection, ushort position)
         {
             if (collection?.Any() != true)

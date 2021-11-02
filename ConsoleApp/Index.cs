@@ -50,6 +50,7 @@ namespace ConsoleApp
             return sequences;
         }
 
+        // TODO need optimization for speed improvement
         private bool CheckSequence(Sequence sequence, ushort[] value)
         {
             var sequenceSymbols = GetSequenceValueSymbols(sequence);
