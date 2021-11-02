@@ -52,12 +52,12 @@ namespace ConsoleApp
 
         private bool CheckSequence(Sequence sequence, ushort[] value)
         {
-            var sequenceSymbols = GetValueSymbols(sequence);
+            var sequenceSymbols = GetSequenceValueSymbols(sequence);
 
             return sequenceSymbols.SequenceEqual(value);
         }
 
-        private ushort[] GetValueSymbols(Sequence sequence)
+        private ushort[] GetSequenceValueSymbols(Sequence sequence)
         {
             return sequence.Grams
                 .SelectMany(_ => _nGramsMap[_].Symbols)
