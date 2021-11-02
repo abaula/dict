@@ -11,15 +11,27 @@ namespace ConsoleApp
         private readonly IReadOnlyDictionary<ushort, Group> _groupsMap;
         private readonly IReadOnlyDictionary<ushort, Sequence> _sequencesMap;
 
-        public Sequence Get(ushort[] value)
+        public Sequence GetSequenceEqualToSymbols(ushort[] symbols)
         {
-            if (value?.Any() != true)
+            if (symbols?.Any() != true)
                 return default;
 
-            var sequences = GetSequencesStartsWith(value.First());
-            var result = sequences.SingleOrDefault(_ => CheckSequence(_, value));
+            var sequences = GetSequencesStartsWith(symbols.First());
+            var result = sequences.SingleOrDefault(_ => CheckSequence(_, symbols));
 
             return result;
+        }
+
+        public Sequence[] GetSequencesForGroup(ushort groupId)
+        {
+            if (!_groupsMap.ContainsKey(groupId))
+                return Array.Empty<Sequence>();
+
+            var group = _groupsMap[groupId];
+
+            return group.Sequences
+                .Select(_ => _sequencesMap[_])
+                .ToArray();
         }
 
         private Sequence[] GetSequencesStartsWith(ushort value)
