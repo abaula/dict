@@ -1,9 +1,9 @@
 namespace ConsoleApp
 {
-    public struct NGram
+    public readonly struct NGram
     {
-        public ushort Id;
-        public ushort[] Symbols;
-        public (ushort, ushort[])[] PositionSequences;
+        public readonly ushort Id;
+        public readonly ushort[] Symbols;
+        public readonly (ushort, ushort[])[] PositionSequences;
     }
 }

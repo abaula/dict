@@ -1,9 +1,9 @@
 namespace ConsoleApp
 {
-    public struct Group
+    public readonly struct Group
     {
-        public ushort Id;
-        public ushort[] Properties;
-        public ushort[] Sequences;
+        public readonly ushort Id;
+        public readonly ushort[] Properties;
+        public readonly ushort[] Sequences;
     }
 }

@@ -10,6 +10,24 @@ namespace ConsoleApp
         private readonly IReadOnlyDictionary<ushort, NGram> _nGramsMap;
         private readonly IReadOnlyDictionary<ushort, Group> _groupsMap;
         private readonly IReadOnlyDictionary<ushort, Sequence> _sequencesMap;
+        private readonly IReadOnlyDictionary<ushort, Property> _propertiesMap;
+
+        public ushort Wildcard => '*';
+
+
+        public Sequence[] SearchSequences(ushort[] symbols)
+        {
+            if (symbols?.Any() != true)
+                return Array.Empty<Sequence>();
+
+            if (!symbols.Any(_ => _ == Wildcard))
+                throw new ArgumentException($"Use this method only for wildcard search. The `{nameof(symbols)}` parameter has no wildcard.");
+
+
+
+
+            return Array.Empty<Sequence>();
+        }
 
         public Sequence GetSequenceEqualToSymbols(ushort[] symbols)
         {
@@ -51,14 +69,14 @@ namespace ConsoleApp
         }
 
         // TODO need optimization for speed improvement
-        private bool CheckSequence(Sequence sequence, ushort[] value)
+        private bool CheckSequence(in Sequence sequence, ushort[] value)
         {
             var sequenceSymbols = GetSequenceValueSymbols(sequence);
 
             return sequenceSymbols.SequenceEqual(value);
         }
 
-        private ushort[] GetSequenceValueSymbols(Sequence sequence)
+        private ushort[] GetSequenceValueSymbols(in Sequence sequence)
         {
             return sequence.Grams
                 .SelectMany(_ => _nGramsMap[_].Symbols)

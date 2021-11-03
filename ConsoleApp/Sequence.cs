@@ -1,10 +1,10 @@
 namespace ConsoleApp
 {
-    public struct Sequence
+    public readonly struct Sequence
     {
-        public ushort Id;
-        public ushort[] Grams;
-        public ushort[] Properties;
-        public ushort[] Groups;
+        public readonly ushort Id;
+        public readonly ushort[] Grams;
+        public readonly ushort[] Properties;
+        public readonly ushort[] Groups;
     }
 }

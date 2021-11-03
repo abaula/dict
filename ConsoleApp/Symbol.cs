@@ -1,8 +1,8 @@
 namespace ConsoleApp
 {
-    public struct Symbol
+    public readonly struct Symbol
     {
-        public ushort Id;
-        public (ushort, ushort[])[] PositionNGrams;
+        public readonly ushort Id;
+        public readonly (ushort, ushort[])[] PositionNGrams;
     }
 }
