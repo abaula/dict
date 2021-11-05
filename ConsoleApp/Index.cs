@@ -15,7 +15,7 @@ namespace ConsoleApp
         public ushort Wildcard => '*';
 
 
-        public Sequence[] SearchSequences(ushort[] symbols)
+        public Sequence[] SearchSequences(ushort[] symbols, int skip, int take)
         {
             if (symbols?.Any() != true)
                 return Array.Empty<Sequence>();
