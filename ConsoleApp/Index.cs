@@ -12,6 +12,8 @@ namespace ConsoleApp
         private readonly IReadOnlyDictionary<ushort, Sequence> _sequencesMap;
         private readonly IReadOnlyDictionary<ushort, Property> _propertiesMap;
 
+        // TODO значения специальных символов должны задаваться при построении словаря из любых 2-х свободных символов для конкретного словаря.
+        public ushort EndSymbol => ushort.MinValue;
         public ushort Wildcard => '*';
 
 
@@ -23,7 +25,27 @@ namespace ConsoleApp
             if (!symbols.Any(_ => _ == Wildcard))
                 throw new ArgumentException($"Use this method only for wildcard search. The `{nameof(symbols)}` parameter has no wildcard.");
 
+            /*
+                Поиск с Джокером
 
+                1. Получаем все NGram для всех возможных комбинаций:
+                    где известный символ в начале NGram,
+                    где известный символ в конце NGram (символ + `EndSymbol`),
+                    где известный символ НЕ в конце NGram (символ + любой символ кроме `EndSymbol` + [(опционально) любой символ вкл. `EndSymbol`]).
+                2. Находим все Sequence, в которые входят все найденные NGram с соблюдением позиций в Sequence:
+                    начало Sequence
+                    конец Sequence
+                    середина Sequence - если таких несколько, то проверяется очерёдность позиций между ними:
+                        после NGram(1)
+                        после NGram(2)
+                        и т.д.
+                3. (!!!проверить нужен ли этот шаг!!!) Найденные Sequence проверяются окончательно на соответствие искомому значению
+                    это необходимо, чтобы не усложнять логику шагов 1 и 2, т.к. NGram переменной длины
+                    и одинаковые символы могут входит в разные NGram, например варианты индексации слова `телега`:
+                        [те][лега]
+                        [теле][га]
+                        [те][ле][га]
+            */
 
 
             return Array.Empty<Sequence>();
