@@ -57,7 +57,7 @@ namespace ConsoleApp
         private static void BuildAndSerializeTwoGramIndex()
         {
             var words = GetWords($"{BasePath}/hagen_morph/dic.txt");
-            var builder = new IndexBuilder();
+            var builder = new IndexBuilderOld();
             var index = builder.Build(words);
             Serialize(index, "TwoGramIndex.stm");
         }

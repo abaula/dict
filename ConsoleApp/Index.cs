@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsoleApp
 {
-    public class Index
+    class Index : IIndex
     {
         private readonly IReadOnlyDictionary<ushort, Symbol> _symbolsMap;
         private readonly IReadOnlyDictionary<ushort, NGram> _nGramsMap;
@@ -12,10 +12,22 @@ namespace ConsoleApp
         private readonly IReadOnlyDictionary<ushort, Sequence> _sequencesMap;
         private readonly IReadOnlyDictionary<ushort, Property> _propertiesMap;
 
+        public Index(IReadOnlyDictionary<ushort, Symbol> symbolsMap,
+            IReadOnlyDictionary<ushort, NGram> nGramsMap,
+            IReadOnlyDictionary<ushort, Group> groupsMap,
+            IReadOnlyDictionary<ushort, Sequence> sequencesMap,
+            IReadOnlyDictionary<ushort, Property> propertiesMap)
+        {
+            _symbolsMap = symbolsMap;
+            _nGramsMap = nGramsMap;
+            _groupsMap = groupsMap;
+            _sequencesMap = sequencesMap;
+            _propertiesMap = propertiesMap;
+        }
+
         // TODO значения специальных символов должны задаваться при построении словаря из любых 2-х свободных символов для конкретного словаря.
         public ushort EndSymbol => ushort.MinValue;
         public ushort Wildcard => '*';
-
 
         public Sequence[] SearchSequences(ushort[] symbols, int skip, int take)
         {
@@ -46,7 +58,6 @@ namespace ConsoleApp
                         [теле][га]
                         [те][ле][га]
             */
-
 
             return Array.Empty<Sequence>();
         }
