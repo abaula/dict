@@ -19,7 +19,8 @@ namespace ConsoleApp
             //CreateTrigrams();
             //OpenTrigrams();
             //BuildAndSerializeTwoGramIndex();
-            MakeTwoGramIndex();
+            //MakeTwoGramIndex();
+            CreateIndex();
 
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
@@ -27,7 +28,7 @@ namespace ConsoleApp
 
         private static void MakeIndex()
         {
-            var index = CreateIndex();
+            var index = CreateIndexOld();
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -108,7 +109,59 @@ namespace ConsoleApp
 
         }
 
-        private static NodeIndex CreateIndex()
+        private static TextGroup[] CreateTextGroupsFromFile(string path)
+        {
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                var groups = new List<TextGroup>();
+                var groupWords = new List<string>();
+
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine()?.Trim();
+
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        if (!groupWords.Any())
+                            continue;
+
+                        var textGroup = new TextGroup
+                        {
+                            Sequences = groupWords.Select(_ => new TextSequence { Sequence = _ }).ToArray()
+                        };
+
+                        groups.Add(textGroup);
+                        groupWords.Clear();
+
+                        continue;
+                    }
+
+                    var arr = line.Split('|')
+                        .Select(w => w.Trim())
+                        .Where(w => !string.IsNullOrEmpty(w))
+                        .ToArray();
+
+                    if (!arr.Any())
+                        continue;
+
+                    groupWords.Add(arr[0].ToLower());
+                }
+
+                return groups.ToArray();
+            }
+        }
+
+        private static IIndex CreateIndex()
+        {
+            var groups = CreateTextGroupsFromFile($"{BasePath}/hagen_morph/dic.txt");
+            var indexBuilder = new IndexBuilder();
+            var index = indexBuilder.Build(groups);
+
+            return index;
+        }
+
+        private static NodeIndex CreateIndexOld()
         {
             //var words = GetWords($"{BasePath}/hagen_morph/dic_short.txt");
             var words = GetWords($"{BasePath}/hagen_morph/dic.txt");
